@@ -2,15 +2,21 @@
     "name": "Tests",
     "rootNamespace": "",
     "references": [
-        "GUID:a3db50d38b2438342a49ae0aec9121a1"
+        "UnityEngine.TestRunner",
+        "UnityEditor.TestRunner",
+        "Game"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
-    "overrideReferences": false,
-    "precompiledReferences": [],
-    "autoReferenced": true,
-    "defineConstraints": [],
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "nunit.framework.dll"
+    ],
+    "autoReferenced": false,
+    "defineConstraints": [
+        "UNITY_INCLUDE_TESTS"
+    ],
     "versionDefines": [],
     "noEngineReferences": false
 }
