@@ -28,6 +28,12 @@ public class LaserTest : MonoBehaviour
     public IEnumerator LaserDestroysAsteroid()
     {
         GameObject asteroid = game.GetSpawner().SpawnAsteroid();
+
+        while (asteroid.GetComponent<Asteroid>().GetHealth() != 1)
+        {
+            asteroid = game.GetSpawner().SpawnAsteroid();
+        }
+
         asteroid.transform.position = Vector3.zero;
         GameObject laser = game.GetShip().SpawnLaser();
         laser.transform.position = Vector3.zero;

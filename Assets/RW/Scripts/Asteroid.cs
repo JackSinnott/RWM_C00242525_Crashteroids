@@ -36,6 +36,24 @@ public class Asteroid : MonoBehaviour
 {
     public float speed = 1;
     private float maxY = -5;
+    private int health = 0;
+
+    private void Awake()
+    {
+        health = Random.Range(1, 3);
+
+        if (health == 2)
+        {
+            transform.GetChild(0).GetComponent<Renderer>().material.color = Color.red;
+        }
+    }
+
+    public bool ReduceHealth()
+    {
+        health--;
+
+        return health <= 0;
+    }
 
     private void Update()
     {
@@ -58,5 +76,10 @@ public class Asteroid : MonoBehaviour
             Game.GameOver();
             Destroy(gameObject);
         }
+    }
+
+    public int GetHealth()
+    {
+        return health;
     }
 }

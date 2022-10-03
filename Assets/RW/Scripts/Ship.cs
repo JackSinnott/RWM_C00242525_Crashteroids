@@ -45,6 +45,8 @@ public class Ship : MonoBehaviour
     [SerializeField]
     private GameObject laser;
     [SerializeField]
+    private GameObject sniper;
+    [SerializeField]
     private Transform shotSpawn;
 
     private float maxLeft = -8;
@@ -71,11 +73,30 @@ public class Ship : MonoBehaviour
         {
             MoveRight();
         }
+
+        if (Input.GetKey(KeyCode.S) && canShoot)
+        {
+            ShootSniper();
+        }
     }
 
     public void ShootLaser()
     {
         StartCoroutine("Shoot");
+    }
+
+    public void ShootSniper()
+    {
+        StartCoroutine("SniperShoot");
+    }
+
+    IEnumerator SniperShoot()
+    {
+        canShoot = false;
+        GameObject sniperShot = SpawnSniper();
+        sniperShot.transform.position = shotSpawn.position;
+        yield return new WaitForSeconds(0.4f);
+        canShoot = true;
     }
 
     IEnumerator Shoot()
@@ -92,6 +113,13 @@ public class Ship : MonoBehaviour
         GameObject newLaser = Instantiate(laser);
         newLaser.SetActive(true);
         return newLaser;
+    }
+
+    public GameObject SpawnSniper()
+    {
+        GameObject newSniper = Instantiate(sniper);
+        newSniper.SetActive(true);
+        return newSniper;
     }
 
     public void MoveLeft()
