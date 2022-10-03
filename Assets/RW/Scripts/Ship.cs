@@ -37,6 +37,9 @@ public class Ship : MonoBehaviour
     public bool isDead = false;
     public float speed = 1;
     public bool canShoot = true;
+    public bool tripleActive = false;
+    float timer = 0.0f;
+
 
     [SerializeField]
     private  MeshRenderer mesh;
@@ -47,6 +50,8 @@ public class Ship : MonoBehaviour
     [SerializeField]
     private Transform shotSpawn;
 
+
+
     private float maxLeft = -8;
     private float maxRight = 8;
 
@@ -55,6 +60,11 @@ public class Ship : MonoBehaviour
         if (isDead)
         {
             return;
+        }
+
+        if (Input.GetKey(KeyCode.T) && !tripleActive)
+        {
+            ShootTripleLaser();
         }
 
         if (Input.GetKey(KeyCode.Space) && canShoot)
@@ -73,6 +83,33 @@ public class Ship : MonoBehaviour
         }
     }
 
+    public void ShootTripleLaser()
+    {
+        timer += Time.deltaTime;
+        if (timer >= 1.0f)
+        {
+            timer = 0.0f;
+            StartCoroutine("ShootTriple");
+        }
+    }
+
+    IEnumerator ShootTriple()
+    {
+        tripleActive = true;
+        GameObject laserShot1 = SpawnLaser();
+        laserShot1.transform.position = shotSpawn.position;
+        yield return new WaitForSeconds(0.1f);
+        GameObject laserShot2 = SpawnLaser();
+        laserShot2.transform.position = shotSpawn.position;
+        yield return new WaitForSeconds(0.1f);
+        GameObject laserShot3 = SpawnLaser();
+        laserShot3.transform.position = shotSpawn.position;
+
+        yield return new WaitForSeconds(3.0f);
+        tripleActive = false;
+    }
+
+
     public void ShootLaser()
     {
         StartCoroutine("Shoot");
@@ -86,6 +123,13 @@ public class Ship : MonoBehaviour
         yield return new WaitForSeconds(0.4f);
         canShoot = true;
     }
+
+    //public GameObject SpawnTripleShot()
+    //{
+    //    GameObject newLaser = Instantiate(tripleShot);
+    //    newLaser.SetActive(true);
+    //    return newLaser;
+    //}
 
     public GameObject SpawnLaser()
     {
