@@ -37,6 +37,7 @@ public class Ship : MonoBehaviour
     public bool isDead = false;
     public float speed = 1;
     public bool canShoot = true;
+    public bool reloading = false;
 
     [SerializeField]
     private  MeshRenderer mesh;
@@ -60,11 +61,15 @@ public class Ship : MonoBehaviour
             return;
         }
 
-        if (Input.GetKey(KeyCode.Space) && canShoot)
+        if (Input.GetKey(KeyCode.Space) && canShoot && !reloading)
         {
-            if(shotsFired < 10)
+            if(shotsFired <= 10)
             {
                 ShootLaser();
+            }
+            else
+            {
+                reloading = true;
             }
             shotsFired++;
         }
@@ -78,10 +83,11 @@ public class Ship : MonoBehaviour
         {
             MoveRight();
         }
-        Debug.Log("shots Fired" + shotsFired);
-        if(shotsFired >= 9)
+
+        if(shotsFired >= 10)
         {
-            canShoot = false;
+        //    canShoot = false;
+            reloading = true;
             ResetReload();
         }
     }
@@ -147,7 +153,7 @@ public class Ship : MonoBehaviour
         {
             shotsFired = 0;
             timer = 0;
-            canShoot = true;
+            reloading = false;
         }
 
     }
