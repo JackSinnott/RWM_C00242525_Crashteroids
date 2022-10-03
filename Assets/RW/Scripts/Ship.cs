@@ -50,6 +50,9 @@ public class Ship : MonoBehaviour
     private float maxLeft = -8;
     private float maxRight = 8;
 
+    private int shotsFired = 0;
+    float timer = 0;
+
     private void Update()
     {
         if (isDead)
@@ -59,7 +62,11 @@ public class Ship : MonoBehaviour
 
         if (Input.GetKey(KeyCode.Space) && canShoot)
         {
-            ShootLaser();
+            if(shotsFired < 10)
+            {
+                ShootLaser();
+            }
+            shotsFired++;
         }
 
         if (Input.GetKey(KeyCode.LeftArrow))
@@ -70,6 +77,12 @@ public class Ship : MonoBehaviour
         if (Input.GetKey(KeyCode.RightArrow))
         {
             MoveRight();
+        }
+        Debug.Log("shots Fired" + shotsFired);
+        if(shotsFired >= 9)
+        {
+            canShoot = false;
+            ResetReload();
         }
     }
 
@@ -124,5 +137,18 @@ public class Ship : MonoBehaviour
         explosion.SetActive(false);
         mesh.enabled = true;
         isDead = false;
+    }
+
+    private void ResetReload()
+    {
+        timer += Time.deltaTime;
+
+        if(timer >= 2)
+        {
+            shotsFired = 0;
+            timer = 0;
+            canShoot = true;
+        }
+
     }
 }
